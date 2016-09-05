@@ -14,7 +14,7 @@ trait ValidatesAttributable
         /** @var \Illuminate\Validation\Validator $validator */
         $validator = parent::getValidatorInstance();
 
-        $this->getModelAttributesRules()->map(function ($rules, $attribute) use ($validator) {
+        collect($this->getModelAttributesRules())->map(function ($rules, $attribute) use ($validator) {
             $validator->mergeRules($attribute, $rules);
         });
 
@@ -33,11 +33,11 @@ trait ValidatesAttributable
         return
             config('attributum.models_namespace', 'App') .
             '\\' .
-            substr(class_basename($this), 0, -strlen('Request'));
+            substr(class_basename($this), 0, -strlen('Controller'));
     }
 
     /**
-     * @return \Illuminate\Support\Collection|static
+     * @return array
      */
     private function getModelAttributesRules()
     {
@@ -47,7 +47,7 @@ trait ValidatesAttributable
             return Manager::modelAttributes($modelClass)
                 ->mapWithKeys(function ($item) {
                     return [$item->name => isset($item->options['rules']) && is_string($item->options['rules']) ? $item->options['rules'] : ''];
-                });
+                })->toArray();
         }
 
         return [];
