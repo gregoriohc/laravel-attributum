@@ -9,15 +9,16 @@ class Manager
     protected static $modelAttributes = [];
 
     private static $defaultAttributeOptions = [
-        'length' => null,
-        'values' => null,
-        'default' => null,
+        'length'   => null,
+        'values'   => null,
+        'default'  => null,
         'nullable' => false,
     ];
 
     /**
      * @param string|object $modelClass
-     * @param bool $update
+     * @param bool          $update
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public static function modelAttributes($modelClass, $update = false)
@@ -33,9 +34,10 @@ class Manager
 
     /**
      * @param string|object $modelClass
-     * @param string $name
-     * @param string $type
-     * @param array $options
+     * @param string        $name
+     * @param string        $type
+     * @param array         $options
+     *
      * @return ModelAttribute
      */
     public static function addModelAttribute($modelClass, $name, $type, $options = [])
@@ -54,9 +56,9 @@ class Manager
 
         $attribute = ModelAttribute::create([
             'attributable_type' => $modelClass,
-            'name' => $name,
-            'type' => $type,
-            'options' => $options,
+            'name'              => $name,
+            'type'              => $type,
+            'options'           => $options,
         ]);
 
         self::modelAttributes($modelClass, true);
@@ -66,9 +68,10 @@ class Manager
 
     /**
      * @param string|object $modelClass
-     * @param string $name
-     * @param string $type
-     * @param array $options
+     * @param string        $name
+     * @param string        $type
+     * @param array         $options
+     *
      * @return ModelAttribute
      */
     public static function updateModelAttribute($modelClass, $name, $type, $options = [])
@@ -88,7 +91,7 @@ class Manager
         $attribute = self::getModelAttribute($modelClass, $name);
 
         $attribute->save([
-            'type' => $type,
+            'type'    => $type,
             'options' => $options,
         ]);
 
@@ -99,8 +102,9 @@ class Manager
 
     /**
      * @param string|object $modelClass
-     * @param string $name
-     * @param string $newName
+     * @param string        $name
+     * @param string        $newName
+     *
      * @return ModelAttribute
      */
     public static function renameModelAttribute($modelClass, $name, $newName)
@@ -124,9 +128,11 @@ class Manager
 
     /**
      * @param string|object $modelClass
-     * @param string $name
-     * @return ModelAttribute
+     * @param string        $name
+     *
      * @throws \Exception
+     *
+     * @return ModelAttribute
      */
     public static function getModelAttribute($modelClass, $name)
     {
@@ -144,7 +150,8 @@ class Manager
 
     /**
      * @param string|object $modelClass
-     * @param string $name
+     * @param string        $name
+     *
      * @return bool
      */
     public static function hasModelAttribute($modelClass, $name)
@@ -159,6 +166,7 @@ class Manager
 
     /**
      * @param string|object $modelClass
+     *
      * @return string
      */
     public static function modelClass($modelClass)
@@ -172,6 +180,7 @@ class Manager
 
     /**
      * @param array $options
+     *
      * @return array
      */
     public static function validateModelAttributeOptions($options)
@@ -196,9 +205,10 @@ class Manager
     }
 
     /**
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $type
      * @param $options
+     *
      * @return mixed
      */
     public static function castValueGet($value, $type, $options)
@@ -209,14 +219,14 @@ class Manager
             case 'text':
             case 'mediumText':
             case 'longText': {
-                $value = (string)$value;
+                $value = (string) $value;
                 if (is_numeric($options['length'])) {
                     $value = substr($value, 0, $options['length']);
                 }
                 break;
             }
             case 'enum': {
-                $value = (string)$value;
+                $value = (string) $value;
                 if (is_array($options['values']) && !in_array($value, $options['values'])) {
                     $value = null;
                 }
@@ -226,11 +236,11 @@ class Manager
             case 'tinyInteger':
             case 'mediumInteger':
             case 'bigInteger': {
-                $value = (int)$value;
+                $value = (int) $value;
                 break;
             }
             case 'float': {
-                $value = (float)$value;
+                $value = (float) $value;
                 break;
             }
             case 'decimal':
@@ -247,14 +257,14 @@ class Manager
                     }
                 }
                 $value = round($value, $scale);
-                $max = (double)str_repeat('9', $precision - $scale) . '.' . str_repeat('9', $scale);
+                $max = (float) str_repeat('9', $precision - $scale).'.'.str_repeat('9', $scale);
                 if ($value > $max) {
                     $value = floor($max * pow(10, $scale)) / pow(10, $scale);
                 }
                 break;
             }
             case 'boolean': {
-                $value = (bool)$value;
+                $value = (bool) $value;
                 break;
             }
             case 'date': {
@@ -279,9 +289,10 @@ class Manager
     }
 
     /**
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $type
      * @param $options
+     *
      * @return mixed
      */
     public static function castValueSet($value, $type, $options)
@@ -292,14 +303,14 @@ class Manager
             case 'text':
             case 'mediumText':
             case 'longText': {
-                $value = (string)$value;
+                $value = (string) $value;
                 if (is_numeric($options['length'])) {
                     $value = substr($value, 0, $options['length']);
                 }
                 break;
             }
             case 'enum': {
-                $value = (string)$value;
+                $value = (string) $value;
                 if (is_array($options['values']) && !in_array($value, $options['values'])) {
                     $value = null;
                 }
@@ -309,11 +320,11 @@ class Manager
             case 'tinyInteger':
             case 'mediumInteger':
             case 'bigInteger': {
-                $value = (string)$value;
+                $value = (string) $value;
                 break;
             }
             case 'float': {
-                $value = (string)$value;
+                $value = (string) $value;
                 break;
             }
             case 'decimal':
@@ -330,15 +341,15 @@ class Manager
                     }
                 }
                 $value = round($value, $scale);
-                $max = (double)str_repeat('9', $precision - $scale) . '.' . str_repeat('9', $scale);
+                $max = (float) str_repeat('9', $precision - $scale).'.'.str_repeat('9', $scale);
                 if ($value > $max) {
                     $value = floor($max * pow(10, $scale)) / pow(10, $scale);
                 }
-                $value = (string)$value;
+                $value = (string) $value;
                 break;
             }
             case 'boolean': {
-                $value = (string)$value;
+                $value = (string) $value;
                 break;
             }
             case 'date': {
@@ -370,7 +381,7 @@ class Manager
                         $value = new Carbon($value);
                     }
                 }
-                $value = (string)$value->timestamp;
+                $value = (string) $value->timestamp;
                 break;
             }
         }

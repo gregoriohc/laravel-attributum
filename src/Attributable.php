@@ -13,20 +13,20 @@ trait Attributable
     {
         // Eager load attributes values and attributes list
         static::loaded(function ($model) {
-            /** @var \Illuminate\Database\Eloquent\Model|Attributable $model */
+            /* @var \Illuminate\Database\Eloquent\Model|Attributable $model */
             $model->load(['modelAttributeValues']);
             $model->modelAttributes();
         });
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function newFromBuilder($attributes = [], $connection = null)
     {
         $instance = parent::newFromBuilder($attributes, $connection);
 
-        /** @var \Illuminate\Database\Eloquent\Model $instance */
+        /* @var \Illuminate\Database\Eloquent\Model $instance */
         $instance->fireModelEvent('loaded');
 
         return $instance;
@@ -35,8 +35,9 @@ trait Attributable
     /**
      * Register a loaded model event with the dispatcher.
      *
-     * @param  \Closure|string $callback
-     * @param  int $priority
+     * @param \Closure|string $callback
+     * @param int             $priority
+     *
      * @return void
      */
     public static function loaded($callback, $priority = 0)
@@ -45,7 +46,7 @@ trait Attributable
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getAttribute($key)
     {
@@ -59,7 +60,7 @@ trait Attributable
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setAttribute($key, $value)
     {
@@ -73,9 +74,10 @@ trait Attributable
     }
 
     /**
-     * Determine if the attribute exits
+     * Determine if the attribute exits.
      *
      * @param string $key
+     *
      * @return bool
      */
     private function issetModelAttribute($key)
@@ -84,9 +86,10 @@ trait Attributable
     }
 
     /**
-     * Get the attribute value
+     * Get the attribute value.
      *
      * @param string $key
+     *
      * @return mixed|null
      */
     private function getModelAttributeValue($key)
@@ -106,15 +109,13 @@ trait Attributable
                 $attributeInfo->options
             );
         }
-
-        return null;
     }
 
     /**
-     * Set the attribute value
+     * Set the attribute value.
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      */
     private function setModelAttributeValue($key, $value)
     {
@@ -128,13 +129,13 @@ trait Attributable
         } else {
             $this->modelAttributeValues()->create([
                 'model_attribute_id' => $attributeInfo->id,
-                'value' => $value,
+                'value'              => $value,
             ]);
         }
     }
 
     /**
-     * Get the list of model attributes
+     * Get the list of model attributes.
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
