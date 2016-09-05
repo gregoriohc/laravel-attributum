@@ -398,4 +398,32 @@ class Manager
 
         return $value;
     }
+
+    /**
+     * @param mixed  $value
+     * @param string $type
+     * @param $options
+     *
+     * @return mixed
+     */
+    public static function castValueForArray($value, $type, $options)
+    {
+        switch ($type) {
+            case 'date': {
+                $value = $value->toDateString();
+                break;
+            }
+            case 'time': {
+                $value = $value->toTimeString();
+                break;
+            }
+            case 'datetime':
+            case 'timestamp': {
+                $value = $value->toDateTimeString();
+                break;
+            }
+        }
+
+        return $value;
+    }
 }

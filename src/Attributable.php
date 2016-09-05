@@ -15,6 +15,7 @@ trait Attributable
         static::loaded(function ($model) {
             /* @var \Illuminate\Database\Eloquent\Model|Attributable $model */
             $model->load(['modelAttributeValues']);
+            $model->addHidden('modelAttributeValues');
             $model->modelAttributes();
         });
     }
@@ -74,6 +75,22 @@ trait Attributable
     }
 
     /**
+     * Convert the model's attributes to an array.
+     *
+     * @return array
+     */
+    public function attributesToArray()
+    {
+        $attributes = parent::attributesToArray();
+
+        $customAttributes = $this->modelAttributes()->mapWithKeys(function ($item) use ($attributes) {
+            return [$item->name => $this->getModelAttributeValueForArray($item->name)];
+        })->toArray();
+
+        return array_merge($attributes, $customAttributes);
+    }
+
+    /**
      * Determine if the attribute exits.
      *
      * @param string $key
@@ -109,6 +126,26 @@ trait Attributable
                 $attributeInfo->options
             );
         }
+    }
+
+    /**
+     * Get the attribute value.
+     *
+     * @param string $key
+     *
+     * @return mixed|null
+     */
+    private function getModelAttributeValueForArray($key)
+    {
+        $attributeInfo = $this->modelAttributes()->where('name', $key)->first();
+
+        $value = $this->getModelAttributeValue($key);
+
+        return Manager::castValueForArray(
+            $value,
+            $attributeInfo->type,
+            $attributeInfo->options
+        );
     }
 
     /**
