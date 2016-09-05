@@ -4,13 +4,15 @@ namespace Gregoriohc\Attributum;
 
 use Illuminate\Support\Facades\Facade as BaseFacade;
 
-class Facade extends BaseFacade {
-
+class Facade extends BaseFacade
+{
     /**
      * Get the registered name of the component.
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return 'attributum'; }
-
+    protected static function getFacadeAccessor()
+    {
+        return 'attributum';
+    }
 }

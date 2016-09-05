@@ -20,13 +20,13 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        $configPath = __DIR__ . '/../config/attributum.php';
+        $configPath = __DIR__.'/../config/attributum.php';
 
         $this->publishes([$configPath => config_path('attributum.php')]);
 
         $this->mergeConfigFrom($configPath, 'attributum');
 
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     /**
