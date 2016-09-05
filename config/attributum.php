@@ -24,4 +24,15 @@ return [
 
     'model_attribute_value_table' => 'model_attribute_values',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Models namespace
+    |--------------------------------------------------------------------------
+    |
+    | The models namespace
+    |
+    */
+
+    'models_namespace' => 'App',
+
 ];

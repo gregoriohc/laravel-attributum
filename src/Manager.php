@@ -34,6 +34,16 @@ class Manager
 
     /**
      * @param string|object $modelClass
+     *
+     * @return bool
+     */
+    public static function hasModelAttributes($modelClass)
+    {
+        return in_array(Attributable::class, class_uses_recursive($modelClass));
+    }
+
+    /**
+     * @param string|object $modelClass
      * @param string        $name
      * @param string        $type
      * @param array         $options
