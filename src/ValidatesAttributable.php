@@ -31,8 +31,8 @@ trait ValidatesAttributable
         }
 
         return
-            config('attributum.models_namespace', 'App') .
-            '\\' .
+            config('attributum.models_namespace', 'App').
+            '\\'.
             substr(class_basename($this), 0, -strlen('Controller'));
     }
 
